@@ -1,23 +1,30 @@
 import { TestBed } from '@angular/core/testing';
+import { vi } from 'vitest';
 import { App } from './app';
 
 describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-    }).compileComponents();
+  it('should call TestService.fullName on submit', () => {
+    let fixture = TestBed.createComponent(App);
+    let app = fixture.componentInstance;
+    let spy = vi.spyOn(app['testService'], 'fullName');
+    
+    app.firstName = 'Chris';
+    app.lastName = 'Lavin';
+    app.onSubmit();
+    
+    expect(spy).toHaveBeenCalledWith('Chris', 'Lavin');
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, week5testing');
+  it('should display formatted name in <p> after submit', () => {
+    let fixture = TestBed.createComponent(App);
+    let app = fixture.componentInstance;
+    
+    app.firstName = 'Chris';
+    app.lastName = 'Lavin';
+    app.onSubmit();
+    fixture.detectChanges();
+    
+    let nameElement = fixture.nativeElement.querySelector('p');
+    expect(nameElement.textContent?.trim()).toContain('Lavin, Chris'); // passes test
   });
 });
