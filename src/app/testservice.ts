@@ -1,7 +1,5 @@
-// testservice.ts
-// Service for name and number utilities
+//Name: Christopher Lavin 
 //StudentID: S00251319
-
 export class TestService {
   fullName(firstname: string, lastname: string): string {
     return `${lastname}, ${firstname}`;
